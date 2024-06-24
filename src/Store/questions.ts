@@ -4,10 +4,11 @@ import { type Question } from './types'
 interface State {
     questions: Question[],
     currentQuestion: number,
-    fetchQuestions: (limit: number) => Promise<void>
+    fetchQuestions: (limit: number) => Promise<void>,
+    selectAnswer: (questionId: number, answerIndex: number) => void
 }
 
-export const useQuestionsStore = create<State>((set, get) => {
+export const useQuestionsStore = create<State>((set) => {
 
     return {
         questions: [],
@@ -19,6 +20,10 @@ export const useQuestionsStore = create<State>((set, get) => {
 
             const questions = json.sort(() => Math.random() - 0.5).slice(0, limit)
             set({ questions })
+        },
+
+        selectAnswer: () => {
+
         }
     }
 })
