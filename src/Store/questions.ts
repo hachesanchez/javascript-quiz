@@ -1,5 +1,6 @@
 import { create } from 'zustand'
 import { type Question } from './types'
+import confetti from 'canvas-confetti'
 
 interface State {
     questions: Question[],
@@ -26,11 +27,18 @@ export const useQuestionsStore = create<State>((set, get) => {
             set(state => {
                 const questions = state.questions.map(question => {
                     if (question.id === questionId) {
+                        const isCorrectUserAnswer = question.correctAnswer === answerIndex
+
+                        if (isCorrectUserAnswer) {
+                            confetti()
+                        }
+
                         return {
                             ...question,
                             isCorrectUserAnswer: question.correctAnswer === answerIndex,
-                            userSelectedAnswer: answerIndex
+                            userSelectedAnswer: answerIndex,
                         }
+                        confetti()
                     }
                     return question
                 })
