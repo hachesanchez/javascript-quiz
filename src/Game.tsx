@@ -6,6 +6,12 @@ import { shadesOfPurple } from 'react-syntax-highlighter/dist/esm/styles/hljs'
 
 const Question = ({ info }: { info: QuestionType }) => {
 
+    const selectAnswer = useQuestionsStore(state => state.selectAnswer)
+
+    const createHandleClick = (answerIndex: number) => () => {
+        selectAnswer(info.id, answerIndex)
+    }
+
     return (
 
         <Card variant="outlined" sx={{ bgcolor: '#222', p: 2, textAlign: "left", marginTop: 4 }}>
@@ -21,7 +27,7 @@ const Question = ({ info }: { info: QuestionType }) => {
             <List sx={{ bgcolor: '#333' }} disablePadding >
                 {info.answers.map((answers, index) => (
                     <ListItem key={index} disablePadding divider>
-                        <ListItemButton>
+                        <ListItemButton onClick={createHandleClick(index)}>
                             <ListItemText primary={answers} sx={{ textAlign: 'center' }} />
                         </ListItemButton>
                     </ListItem>
@@ -40,6 +46,7 @@ export const Game = () => {
 
     const questionInfo = questions[currentQuestion]
     console.log('la currentInfo', questionInfo)
+    console.log(questions)
 
     return (
         <>

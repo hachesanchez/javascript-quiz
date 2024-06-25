@@ -8,7 +8,7 @@ interface State {
     selectAnswer: (questionId: number, answerIndex: number) => void
 }
 
-export const useQuestionsStore = create<State>((set) => {
+export const useQuestionsStore = create<State>((set, get) => {
 
     return {
         questions: [],
@@ -22,8 +22,38 @@ export const useQuestionsStore = create<State>((set) => {
             set({ questions })
         },
 
-        selectAnswer: () => {
-
+        selectAnswer: (questionId: number, answerIndex: number) => {
+            set(state => {
+                const questions = state.questions.map(question => {
+                    if (question.id === questionId) {
+                        return {
+                            ...question,
+                            isCorrectUserAnswer: question.correctAnswer === answerIndex,
+                            userSelectedAnswer: answerIndex
+                        }
+                    }
+                    return question
+                })
+                return { questions }
+            })
         }
+
+        // selectAnswer: (questionId: number, answerIndex: number) => {
+        //     const { questions } = get()
+        //     const newQuestions = structuredClone(questions)
+        //     const questionIndex = newQuestions.findIndex(q => q.id === questionId)
+        //     const questionInfo = newQuestions[questionIndex]
+        //     const isCorrectUserAnswer = questionInfo.correctAnswer === answerIndex
+
+        //     newQuestions[questionIndex] = {
+        //         ...questionInfo,
+        //         isCorrectUserAnswer,
+        //         userSelectedAnswer: answerIndex
+        //     }
+
+        //     set({ questions: newQuestions })
+        // }
+
+
     }
 })
